@@ -10,16 +10,16 @@ namespace Rant
     {
         private readonly Tuple<string, ParamFlags>[] _parameters;
         private readonly int _argCount;
-        private readonly Pattern _source;
+        private readonly RantPattern _source;
 
-        private Subroutine(Pattern source, Tuple<string, ParamFlags>[] parameters)
+        private Subroutine(RantPattern source, Tuple<string, ParamFlags>[] parameters)
         {
             _source = source;
             _parameters = parameters;
             _argCount = _parameters.Length;
         }
 
-        public Pattern Source
+        public RantPattern Source
         {
             get { return _source; }
         }
@@ -34,14 +34,14 @@ namespace Rant
             get { return _argCount; }
         }
 
-        public static Subroutine FromTokens(string name, Pattern derivedSource, IEnumerable<Token<TokenType>> tokens, Tuple<string, ParamFlags>[] parameters)
+        public static Subroutine FromTokens(string name, RantPattern derivedSource, IEnumerable<Token<TokenType>> tokens, Tuple<string, ParamFlags>[] parameters)
         {
-            return new Subroutine(Pattern.Derived(name, derivedSource, tokens), parameters);
+            return new Subroutine(RantPattern.Derived(name, derivedSource, tokens), parameters);
         }
 
         public static Subroutine FromString(string name, string code, Tuple<string, ParamFlags>[] parameters)
         {
-            return new Subroutine(Pattern.FromString(name, code), parameters);
+            return new Subroutine(RantPattern.FromString(name, code), parameters);
         }
     }
 }

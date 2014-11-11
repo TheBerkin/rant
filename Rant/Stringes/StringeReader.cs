@@ -238,9 +238,8 @@ namespace Rant.Stringes
                     if (rules.IgnoreRules.Contains(t.Item2)) goto readStart;
                     return new Token<T>(t.Item2, c);
                 }
-
                 
-                const string tokenGroupName = "token";
+                const string tokenGroupName = "value";
 
                 // Check regex rules
                 if (rules.RegexList.Any())
@@ -269,7 +268,7 @@ namespace Rant.Stringes
                             return new Token<T>(rules.UndefinedCaptureRule.Item2, rules.UndefinedCaptureRule.Item1(_stringe.Slice(u, _pos)));
                         }
 
-                        // Return longest match, narrow down to <token> group if available.
+                        // Return longest match, narrow down to <value> group if available.
                         var group = longestMatch.Groups[tokenGroupName];
                         if (group.Success)
                         {

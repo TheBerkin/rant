@@ -1,15 +1,15 @@
 ﻿namespace Rant.Arithmetic
 {
-    internal enum MathTokenType : int
+    internal enum MathTokenType
     {
-        LeftParen, // (
-        RightParen, // )
-        Equals, // =
-        Plus, // +
-        Minus, // -
-        Asterisk, // *
-        Slash, // /
-        Caret, // ^
+        LeftParen,
+        RightParen,
+        Equals,
+        Plus,
+        Minus,
+        Asterisk,
+        Slash,
+        Caret,
         Name,
         Number,
         Increment,
@@ -22,6 +22,7 @@
         DivAssign,
         ModAssign,
         PowAssign,
+        Pipe,
         End
     }
 }

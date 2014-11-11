@@ -14,7 +14,7 @@ namespace Rant.Blueprints
         public override bool Use()
         {
             var srcstr = I.PopResultString();
-            var src = new Pattern("Meta_" + String.Format("{0:X16}", srcstr.Hash()), SourceType.Metapattern, srcstr);
+            var src = new RantPattern("Meta_" + String.Format("{0:X16}", srcstr.Hash()), SourceType.Metapattern, srcstr);
             I.PushState(new Interpreter.State(I, src, I.CurrentState.Output));
             return true;
         }

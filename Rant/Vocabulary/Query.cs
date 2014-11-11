@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Rant
+namespace Rant.Vocabulary
 {
     /// <summary>
     /// Represents a set of search criteria for a Rant dictionary.
@@ -12,7 +12,7 @@ namespace Rant
     {
         private readonly string _name;
         private readonly string _subtype;
-        private readonly string _carrier;
+        private readonly Carrier _carrier;
         private readonly bool _exclusive;
         private readonly IEnumerable<Tuple<bool, string>[]> _classFilters;
         private readonly IEnumerable<Tuple<bool, Regex>> _regexFilters;
@@ -22,11 +22,11 @@ namespace Rant
         /// </summary>
         /// <param name="name">The name of the dictionary to search.</param>
         /// <param name="subtype">The subtype of the dictionary entry to use.</param>
-        /// <param name="carrier">The carrier name to synchronize selections with. Leave blank for no carrier.</param>
+        /// <param name="carrier">The carrier for the query.</param>
         /// <param name="exclusive">Specifies exclusivity of class filters.</param>
         /// <param name="classFilters">The class filters to search by.</param>
         /// <param name="regexFilters">The regex filters to search by.</param>
-        public Query(string name, string subtype, string carrier, bool exclusive, IEnumerable<Tuple<bool, string>[]> classFilters,
+        public Query(string name, string subtype, Carrier carrier, bool exclusive, IEnumerable<Tuple<bool, string>[]> classFilters,
             IEnumerable<Tuple<bool, Regex>> regexFilters)
         {
             _name = name;
@@ -38,9 +38,9 @@ namespace Rant
         }
 
         /// <summary>
-        /// The carrier name to synchronize selections with.
+        /// The carrier for the query.
         /// </summary>
-        public string Carrier
+        public Carrier Carrier
         {
             get { return _carrier; }
         }
@@ -83,26 +83,6 @@ namespace Rant
         public IEnumerable<Tuple<bool, Regex>> RegexFilters
         {
             get { return _regexFilters; }
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hash = 17;
-                hash = hash * 486187739 + (_name ?? "").GetHashCode();
-                hash = hash * 486187739 + (_subtype ?? "").GetHashCode();
-                hash = hash * 486187739 + (_carrier ?? "").GetHashCode();
-                hash = hash * 486187739 + (_exclusive ? 13 : 17);
-                hash = hash * 486187739 +
-                    _classFilters.Aggregate(hash, (c, n) =>
-                        c + n.Aggregate(n.GetHashCode(), (cc, nn) =>
-                            cc + nn.GetHashCode() * 486187739 + 17)
-                        * 486187739 + 17);
-                hash = hash * 486187739 + _regexFilters.Aggregate(hash, (c, n) =>
-                    (c + n.Item1.GetHashCode() + n.Item2.ToString().GetHashCode() + n.Item2.Options.GetHashCode()) * 486187739 + 17);
-                return hash;
-            }
         }
     }
 }

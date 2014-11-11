@@ -2,22 +2,22 @@
 using System.IO;
 using System.Linq;
 
-namespace Rant
+namespace Rant.Vocabulary
 {
     /// <summary>
     /// Represents a collection of named, queryable dictionaries. This is the default vocabulary type used by Rant.
     /// </summary>
-    public sealed class Vocabulary : IVocabulary
+    public sealed class RantVocabulary : IRantVocabulary
     {
-        private readonly Dictionary<string, Dictionary> _wordLists;
+        private readonly Dictionary<string, RantDictionary> _wordLists;
 
         /// <summary>
         /// Creates a new Vocabulary object from the specified dictionary collection.
         /// </summary>
         /// <param name="dics"></param>
-        public Vocabulary(IEnumerable<Dictionary> dics)
+        public RantVocabulary(IEnumerable<RantDictionary> dics)
         {
-            _wordLists = new Dictionary<string, Dictionary>();
+            _wordLists = new Dictionary<string, RantDictionary>();
 
             if (dics == null) return;
 
@@ -31,7 +31,7 @@ namespace Rant
         /// Adds a new Dictionary object to the collection.
         /// </summary>
         /// <param name="dictionary"></param>
-        public void AddDictionary(Dictionary dictionary)
+        public void AddDictionary(RantDictionary dictionary)
         {
             _wordLists[dictionary.Name] = dictionary;
         }
@@ -42,9 +42,9 @@ namespace Rant
         /// <param name="directory">The directory from which to load dictionaries.</param>
         /// <param name="filter">Indicates whether dictionary entries marked with the #nsfw flag should be loaded.</param>
         /// <returns></returns>
-        public static Vocabulary FromDirectory(string directory, NsfwFilter filter)
+        public static RantVocabulary FromDirectory(string directory, NsfwFilter filter)
         {
-            return new Vocabulary(Directory.GetFiles(directory, "*.dic").Select(file => Dictionary.FromFile(file, filter)).ToList());
+            return new RantVocabulary(Directory.GetFiles(directory, "*.dic").Select(file => RantDictionary.FromFile(file, filter)).ToList());
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace Rant
         /// </summary>
         /// <param name="directories">The directories from which to load dictionaries.</param>
         /// <returns></returns>
-        public static Vocabulary FromMultiDirectory(params string[] directories)
+        public static RantVocabulary FromMultiDirectory(params string[] directories)
         {
-            return new Vocabulary(directories.SelectMany(path => Directory.GetFiles(path, "*.dic")).Select(file => Dictionary.FromFile(file)));
+            return new RantVocabulary(directories.SelectMany(path => Directory.GetFiles(path, "*.dic")).Select(file => RantDictionary.FromFile(file)));
         }
 
         /// <summary>
@@ -63,9 +63,9 @@ namespace Rant
         /// <param name="directories">The directories from which to load dictionaries.</param>
         /// <param name="filter">Indicates whether dictionary entries marked with the #nsfw flag should be loaded.</param>
         /// <returns></returns>
-        public static Vocabulary FromMultiDirectory(string[] directories, NsfwFilter filter)
+        public static RantVocabulary FromMultiDirectory(string[] directories, NsfwFilter filter)
         {
-            return new Vocabulary(directories.SelectMany(path => Directory.GetFiles("*.dic")).Select(file => Dictionary.FromFile(file, filter)));
+            return new RantVocabulary(directories.SelectMany(path => Directory.GetFiles("*.dic")).Select(file => RantDictionary.FromFile(file, filter)));
         }
 
         /// <summary>
@@ -73,13 +73,14 @@ namespace Rant
         /// </summary>
         /// <param name="rng">The random number generator to randomize the match with.</param>
         /// <param name="query">The search criteria to use.</param>
+        /// <param name="syncState">The state object to use for carrier synchronization.</param>
         /// <returns></returns>
-        public string Query(RNG rng, Query query)
+        public string Query(RNG rng, Query query, CarrierSyncState syncState)
         {
-            Dictionary wordList;
+            RantDictionary wordList;
             return !_wordLists.TryGetValue(query.Name, out wordList) 
-                ? "MISSINGDIC" 
-                : wordList.Query(rng, query);
+                ? "[Missing Dic]" 
+                : wordList.Query(rng, query, syncState);
         }
     }
 }

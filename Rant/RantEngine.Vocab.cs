@@ -1,15 +1,16 @@
 ﻿using System;
+using Rant.Vocabulary;
 
 namespace Rant
 {
-    public partial class Engine
+    public partial class RantEngine
     {
-        private IVocabulary _vocabulary;
+        private IRantVocabulary _vocabulary;
 
         /// <summary>
         /// The vocabulary associated with this instance.
         /// </summary>
-        public IVocabulary Vocabulary
+        public IRantVocabulary Vocabulary
         {
             get { return _vocabulary; }
             set
@@ -25,11 +26,11 @@ namespace Rant
 
             if (String.IsNullOrEmpty(path))
             {
-                _vocabulary = new Vocabulary(null);
+                _vocabulary = new RantVocabulary(null);
                 return;
             }
 
-            _vocabulary = Rant.Vocabulary.FromDirectory(path, filter);
+            _vocabulary = RantVocabulary.FromDirectory(path, filter);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace Rant
         /// </summary>
         public string Code { get { return _source; } }
 
-        internal RantException(Pattern source, Stringe token, string message = "A generic syntax error was encountered.") : base((token != null ? ("(" + source.Name + " @ Ln " + token.Line + ", Col " + token.Column + ") - ") : "") + message)
+        internal RantException(RantPattern source, Stringe token, string message = "A generic syntax error was encountered.") : base((token != null ? ("(" + source.Name + " @ Ln " + token.Line + ", Col " + token.Column + ") - ") : "") + message)
         {
             _source = source.Code;
             if (token != null)

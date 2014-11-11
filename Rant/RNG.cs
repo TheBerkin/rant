@@ -272,6 +272,7 @@ namespace Rant
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Next(int max)
         {
+            if (max == 0) return 0;
             return (int)(NextRaw() & 0x7FFFFFFF) % max;
         }
 
@@ -283,6 +284,7 @@ namespace Rant
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Prev(int max)
         {
+            if (max == 0) return 0;
             return (int)(PrevRaw() & 0x7FFFFFFF) % max;
         }
 
@@ -294,6 +296,7 @@ namespace Rant
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Peek(int max)
         {
+            if (max == 0) return 0;
             return ((int)GetRaw(Seed, Generation) & 0x7FFFFFFF) % max;
         }
 
@@ -306,6 +309,7 @@ namespace Rant
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int PeekAt(long generation, int max)
         {
+            if (max == 0) return 0;
             return ((int)GetRaw(Seed, generation) & 0x7FFFFFFF) % max;
         }
 
@@ -318,6 +322,7 @@ namespace Rant
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Next(int min, int max)
         {
+            if (max == 0) return 0;
             if (min >= max)
             {
                 throw new ArgumentException("Min must be less than max.");
@@ -335,6 +340,7 @@ namespace Rant
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Prev(int min, int max)
         {
+            if (max == 0) return 0;
             if (min >= max)
             {
                 throw new ArgumentException("Min must be less than max.");
@@ -352,6 +358,7 @@ namespace Rant
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Peek(int min, int max)
         {
+            if (max == 0) return 0;
             if (min >= max)
             {
                 throw new ArgumentException("Min must be less than max.");
@@ -370,6 +377,7 @@ namespace Rant
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int PeekAt(int generation, int min, int max)
         {
+            if (max == 0) return 0;
             if (min >= max)
             {
                 throw new ArgumentException("Min must be less than max.");

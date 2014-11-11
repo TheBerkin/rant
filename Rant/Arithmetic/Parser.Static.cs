@@ -5,12 +5,12 @@ namespace Rant.Arithmetic
 {
     internal partial class Parser
     {
-        private static readonly Dictionary<MathTokenType, IInfixParselet> infixParselets;
-        private static readonly Dictionary<MathTokenType, IPrefixParselet> prefixParselets; 
+        private static readonly Dictionary<MathTokenType, IInfixParselet> InfixParselets;
+        private static readonly Dictionary<MathTokenType, IPrefixParselet> PrefixParselets; 
 
         static Parser()
         {
-            infixParselets = new Dictionary<MathTokenType, IInfixParselet>
+            InfixParselets = new Dictionary<MathTokenType, IInfixParselet>
             {
                 {MathTokenType.Equals, new BinaryOperatorParselet((int)Precedence.Assignment, true)},
                 {MathTokenType.Plus, new BinaryOperatorParselet((int)Precedence.Sum, false)},
@@ -30,14 +30,14 @@ namespace Rant.Arithmetic
                 {MathTokenType.PowAssign, new BinaryOperatorParselet((int)Precedence.Assignment, true)},
             };
 
-            prefixParselets = new Dictionary<MathTokenType, IPrefixParselet>
+            PrefixParselets = new Dictionary<MathTokenType, IPrefixParselet>
             {
                 {MathTokenType.Minus, new PrefixOperatorParselet((int)Precedence.Prefix)},
                 {MathTokenType.Increment, new PrefixOperatorParselet((int)Precedence.Prefix)},
                 {MathTokenType.Decrement, new PrefixOperatorParselet((int)Precedence.Prefix)},
                 {MathTokenType.Number, new NumberParselet()},
                 {MathTokenType.Name, new NameParselet()},
-                {MathTokenType.LeftParen, new GroupParselet()}
+                {MathTokenType.Pipe, new AbsParselet()}
             };
         }
     }

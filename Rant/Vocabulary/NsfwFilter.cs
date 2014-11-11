@@ -1,4 +1,4 @@
-﻿namespace Rant
+﻿namespace Rant.Vocabulary
 {
     /// <summary>
     /// Used to instruct the dictionary loader if entries marked as NSFW should be loaded.

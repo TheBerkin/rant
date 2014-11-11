@@ -200,8 +200,8 @@ namespace Rant
             if (String.IsNullOrEmpty(regexLiteral)) throw new ArgumentException("Argument 'regexLiteral' cannot be null or empty.");
             bool noCase = regexLiteral.EndsWith("i");
             var literal = regexLiteral.TrimEnd('i');
-            if (!literal.StartsWith("/") || !literal.EndsWith("/")) throw new FormatException("Regex literal was not in the correct format.");
-            return new Regex(literal.Slice(1, literal.Length - 1), (noCase ? RegexOptions.IgnoreCase : RegexOptions.None) | RegexOptions.ExplicitCapture);
+            if (!literal.StartsWith("//") || !literal.EndsWith("//")) throw new FormatException("Regex literal was not in the correct format.");
+            return new Regex(literal.Slice(2, literal.Length - 2), (noCase ? RegexOptions.IgnoreCase : RegexOptions.None) | RegexOptions.ExplicitCapture);
         }
 
         public static string UnescapeConstantLiteral(string literal)

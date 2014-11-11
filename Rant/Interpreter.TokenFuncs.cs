@@ -7,13 +7,12 @@ using System.Text.RegularExpressions;
 using Rant.Arithmetic;
 using Rant.Blueprints;
 using Rant.Compiler;
+using Rant.Vocabulary;
 using Rant.Stringes.Tokens;
 
 namespace Rant
 {
-    // TODO: Replace the dreadful multiple PeekToken() calls with a single ReadToken() call
-
-    internal delegate bool TokenFunc(Interpreter interpreter, PatternReader reader, Interpreter.State state);
+    internal delegate bool TokenFunc(Interpreter interpreter, Token<TokenType> firstToken, PatternReader reader, Interpreter.State state);
 
     internal partial class Interpreter
     {
@@ -28,9 +27,8 @@ namespace Rant
             {TokenType.Text, DoText}
         };
 
-        private static bool DoMath(Interpreter interpreter, PatternReader reader, State state)
+        private static bool DoMath(Interpreter interpreter, Token<TokenType> firstToken, PatternReader reader, State state)
         {
-            reader.Read(TokenType.LeftParen);
             bool isStatement = reader.Take(TokenType.At);
             var tokens = reader.ReadToScopeClose(TokenType.LeftParen, TokenType.RightParen, BracketPairs.All);
             interpreter.PushState(State.CreateSub(reader.Source, tokens, interpreter));
@@ -46,9 +44,55 @@ namespace Rant
             return true;
         }
 
-        private static bool DoQuery(Interpreter interpreter, PatternReader reader, State state)
+        private static bool DoQuery(Interpreter interpreter, Token<TokenType> firstToken, PatternReader reader, State state)
         {
-            reader.Read(TokenType.LeftAngle);
+            reader.SkipSpace();
+
+            bool storeMacro = false;
+            bool macroIsGlobal = false;
+            string macroName = null;
+
+            // Check if this is a macro
+            if (reader.Take(TokenType.At))
+            {
+                reader.SkipSpace();
+
+                var macroNameToken = reader.Read(TokenType.Text, "query macro name");
+                if (!Util.ValidateName(macroNameToken.Value))
+                    throw new RantException(reader.Source, macroNameToken, "Invalid macro name.");
+
+                macroName = macroNameToken.Value;
+
+                reader.SkipSpace();
+
+                // Check if the macro is a definition or a call.
+                // A definition will start with a colon ':' or equals '=' after the name. A call will only consist of the name.
+                switch (reader.ReadToken().Identifier)
+                {
+                    case TokenType.Colon: // Local definition
+                    {
+                        storeMacro = true;
+                    }
+                    break;
+                    case TokenType.Equal: // Global definition
+                    {
+                        storeMacro = true;
+                        macroIsGlobal = true;
+                    }
+                    break;
+                    case TokenType.RightAngle: // Call
+                    {
+                        Query q;
+                        if (!interpreter.LocalQueryMacros.TryGetValue(macroName, out q) && !interpreter.Engine.GlobalQueryMacros.TryGetValue(macroName, out q))
+                        {
+                            throw new RantException(reader.Source, macroNameToken, "Nonexistent query macro '" + macroName + "'");
+                        }
+                        interpreter.Print(interpreter.Engine.Vocabulary.Query(interpreter.RNG, q, interpreter.CarrierSyncState));
+                        return false;
+                    }
+                }
+            }
+
             reader.SkipSpace();
             var namesub = reader.Read(TokenType.Text, "list name").Split(new[] { '.' }, 2).ToArray();
             reader.SkipSpace();
@@ -57,9 +101,9 @@ namespace Rant
             List<Tuple<bool, string>> cfList = null;
             List<Tuple<bool, string>[]> classFilterList = null;
             List<Tuple<bool, Regex>> regList = null;
-            string carrier = "";
+            Carrier carrier = null;
 
-            Token<TokenType> token = null;
+            Token<TokenType> queryToken = null;
 
             // Read query arguments
             while (true)
@@ -81,21 +125,45 @@ namespace Rant
                 }
                 else if (reader.Take(TokenType.Question))
                 {
-                    token = reader.Read(TokenType.Regex, "regex");
-                    (regList ?? (regList = new List<Tuple<bool, Regex>>())).Add(Tuple.Create(true, Util.ParseRegex(token.Value)));
+                    queryToken = reader.Read(TokenType.Regex, "regex");
+                    (regList ?? (regList = new List<Tuple<bool, Regex>>())).Add(Tuple.Create(true, Util.ParseRegex(queryToken.Value)));
                 }
                 else if (reader.Take(TokenType.Without))
                 {
-                    token = reader.Read(TokenType.Regex, "regex");
-                    (regList ?? (regList = new List<Tuple<bool, Regex>>())).Add(Tuple.Create(false, Util.ParseRegex(token.Value)));
+                    queryToken = reader.Read(TokenType.Regex, "regex");
+                    (regList ?? (regList = new List<Tuple<bool, Regex>>())).Add(Tuple.Create(false, Util.ParseRegex(queryToken.Value)));
                 }
-                else if (reader.Take(TokenType.DoubleColon))
+                else if (reader.Take(TokenType.DoubleColon)) // Start of carrier
                 {
-                    token = reader.Read(TokenType.Text, "carrier name");
-                    carrier = token.Value.Trim();
+                    reader.SkipSpace();
+
+                    CarrierSyncType type;
+                    Token<TokenType> typeToken;
+
+                    switch ((typeToken = reader.ReadToken()).Identifier)
+                    {
+                        case TokenType.Exclamation:
+                            type = CarrierSyncType.Unique;
+                            break;
+                        case TokenType.Equal:
+                            type = CarrierSyncType.Match;
+                            break;
+                        case TokenType.Ampersand:
+                            type = CarrierSyncType.Rhyme;
+                            break;
+                        default:
+                            throw new RantException(reader.Source, typeToken, "Unrecognized token '" + typeToken.Value + "' in carrier.");
+                    }
+
+                    reader.SkipSpace();
+
+                    carrier = new Carrier(type, reader.Read(TokenType.Text, "carrier sync ID").Value, 0, 0);
+
+                    reader.SkipSpace();
+
                     if (!reader.Take(TokenType.RightAngle))
                     {
-                        throw new RantException(reader.Source, token, "Expected '>' after carrier. (The carrier should be your last query argument!)");
+                        throw new RantException(reader.Source, queryToken, "Expected '>' after carrier. (The carrier should be your last query argument!)");
                     }
                     break;
                 }
@@ -110,34 +178,50 @@ namespace Rant
                 }
             }
 
+            var query = new Query(
+                namesub[0].Value.Trim(),
+                namesub.Length == 2 ? namesub[1].Value : "",
+                carrier, exclusive, classFilterList, regList);
+
+            if (storeMacro)
+            {
+                if (macroIsGlobal)
+                {
+                    interpreter.Engine.GlobalQueryMacros[macroName] = query;
+                }
+                else
+                {
+                    interpreter.LocalQueryMacros[macroName] = query;
+                }
+                return false;
+            }
+
             // Query dictionary and print result
-            interpreter.Print(interpreter.Engine.Vocabulary.Query(interpreter.RNG, 
-                new Query(namesub[0].Value.Trim(), namesub.Length == 2 ? namesub[1].Value : "", carrier, exclusive, classFilterList, regList)));
+            interpreter.Print(interpreter.Engine.Vocabulary.Query(interpreter.RNG, query, interpreter.CarrierSyncState));
 
             return false;
         }
 
-        private static bool DoText(Interpreter interpreter, PatternReader reader, State state)
+        private static bool DoText(Interpreter interpreter, Token<TokenType> firstToken, PatternReader reader, State state)
         {
-            interpreter.Print(reader.ReadToken().Value);
+            interpreter.Print(firstToken.Value);
             return false;
         }
 
-        private static bool DoConstant(Interpreter interpreter, PatternReader reader, State state)
+        private static bool DoConstant(Interpreter interpreter, Token<TokenType> firstToken, PatternReader reader, State state)
         {
-            interpreter.Print(Util.UnescapeConstantLiteral(reader.ReadToken().Value));
+            interpreter.Print(Util.UnescapeConstantLiteral(firstToken.Value));
             return false;
         }
 
-        private static bool DoEscape(Interpreter interpreter, PatternReader reader, State state)
+        private static bool DoEscape(Interpreter interpreter, Token<TokenType> firstToken, PatternReader reader, State state)
         {
-            interpreter.Print(Util.Unescape(reader.ReadToken().Value, interpreter, interpreter.RNG));
+            interpreter.Print(Util.Unescape(firstToken.Value, interpreter, interpreter.RNG));
             return false;
         }
 
-        private static bool DoTag(Interpreter interpreter, PatternReader reader, State state)
+        private static bool DoTag(Interpreter interpreter, Token<TokenType> firstToken, PatternReader reader, State state)
         {
-            reader.Read(TokenType.LeftSquare);
             var name = reader.ReadToken();
 
             // Check if metapattern
@@ -285,17 +369,16 @@ namespace Rant
             return true;
         }
 
-        private static bool DoBlock(Interpreter interpreter, PatternReader reader, State state)
+        private static bool DoBlock(Interpreter interpreter, Token<TokenType> firstToken, PatternReader reader, State state)
         {
             Tuple<IEnumerable<Token<TokenType>>[], int> items;
-            var t = reader.PeekToken();
 
             // Check if the block is already cached
-            if (!reader.Source.TryGetCachedBlock(t, out items))
+            if (!reader.Source.TryGetCachedBlock(firstToken, out items))
             {
-                var block = reader.ReadMultiItemScope(TokenType.LeftCurly, TokenType.RightCurly, TokenType.Pipe, BracketPairs.All).ToArray();
+                var block = reader.ReadMultiItemScope(firstToken, TokenType.LeftCurly, TokenType.RightCurly, TokenType.Pipe, BracketPairs.All).ToArray();
                 items = Tuple.Create(block, reader.Position);
-                reader.Source.CacheBlock(t, block, reader.Position);
+                reader.Source.CacheBlock(firstToken, block, reader.Position);
             }
             else
             {

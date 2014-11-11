@@ -40,7 +40,7 @@ namespace Rant.Arithmetic
             var token = Take();
 
             IPrefixParselet prefixParselet;
-            if (!prefixParselets.TryGetValue(token.Identifier, out prefixParselet))
+            if (!PrefixParselets.TryGetValue(token.Identifier, out prefixParselet))
             {
                 throw new RantException(_src, token, "Invalid expression '" + token.Value + "'.");
             }
@@ -52,7 +52,7 @@ namespace Rant.Arithmetic
             {
                 token = Take();
                 IInfixParselet infix;
-                if (!infixParselets.TryGetValue(token.Identifier, out infix))
+                if (!InfixParselets.TryGetValue(token.Identifier, out infix))
                 {
                     throw new RantException(_src, token, "Invalid operator '" + token.Value + "'.");
                 }
@@ -72,7 +72,7 @@ namespace Rant.Arithmetic
         {
             if (_pos == _tokens.Length) return 0;
             IInfixParselet infix;
-            infixParselets.TryGetValue(Peek().Identifier, out infix);
+            InfixParselets.TryGetValue(Peek().Identifier, out infix);
             return infix != null ? infix.Precedence : 0;
         }
 

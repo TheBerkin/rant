@@ -58,7 +58,7 @@ namespace Rant
         {
             char lc = _lastChar;
             var caps = _caps;
-            var anBuilder = Tuple.Create(new StringBuilder().Append(Util.Capitalize(Engine.CurrentIndefiniteArticleI.ConsonantForm, ref _caps, ref _lastChar)), caps, lc);
+            var anBuilder = Tuple.Create(new StringBuilder().Append(Util.Capitalize(RantEngine.CurrentIndefiniteArticleI.ConsonantForm, ref _caps, ref _lastChar)), caps, lc);
             var afterBuilder = _currentBuffer = new StringBuilder();
             _articleConverters[afterBuilder] = anBuilder;
             _buffers.Add(anBuilder.Item1);
@@ -73,14 +73,14 @@ namespace Rant
             int l1 = aBuilder.Item1.Length;
             if (target.Length == 0) // Clear to "a" if the after-buffer is empty
             {
-                aBuilder.Item1.Clear().Append(Util.Capitalize(Engine.CurrentIndefiniteArticleI.ConsonantForm, aBuilder.Item2, aBuilder.Item3));
+                aBuilder.Item1.Clear().Append(Util.Capitalize(RantEngine.CurrentIndefiniteArticleI.ConsonantForm, aBuilder.Item2, aBuilder.Item3));
                 _length += -l1 + aBuilder.Item1.Length;
                 return;
             }
 
             // Check for vowel
-            if (!Engine.CurrentIndefiniteArticleI.PrecedesVowel(target)) return;
-            aBuilder.Item1.Clear().Append(Util.Capitalize(Engine.CurrentIndefiniteArticleI.VowelForm, aBuilder.Item2, aBuilder.Item3));
+            if (!RantEngine.CurrentIndefiniteArticleI.PrecedesVowel(target)) return;
+            aBuilder.Item1.Clear().Append(Util.Capitalize(RantEngine.CurrentIndefiniteArticleI.VowelForm, aBuilder.Item2, aBuilder.Item3));
             _length += -l1 + aBuilder.Item1.Length;
         }
 

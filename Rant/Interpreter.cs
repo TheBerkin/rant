@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 
 using Rant.Compiler;
 using Rant.Stringes.Tokens;
+using Rant.Vocabulary;
 
 namespace Rant
 {
@@ -13,8 +14,12 @@ namespace Rant
     {
         // Main fields
         private readonly RNG _rng;
-        private readonly Pattern _mainSource;
-        private readonly Engine _engine;
+        private readonly RantPattern _mainSource;
+        private readonly RantEngine _engine;
+
+        // Queries
+        private readonly CarrierSyncState _carrierSyncState = new CarrierSyncState();
+        private readonly Dictionary<string, Query> _localQueryMacros = new Dictionary<string, Query>(); 
 
         // Next block attribs
         private BlockAttribs _blockAttribs = new BlockAttribs();
@@ -44,9 +49,19 @@ namespace Rant
 
         private readonly HashSet<State> _baseStates = new HashSet<State>(); 
 
-        private readonly Limit<int> _charLimit; 
+        private readonly Limit<int> _charLimit;
 
-        public Engine Engine
+        public CarrierSyncState CarrierSyncState
+        {
+            get { return _carrierSyncState; }
+        }
+
+        public Dictionary<string, Query> LocalQueryMacros
+        {
+            get { return _localQueryMacros; }
+        }
+
+        public RantEngine Engine
         {
             get { return _engine; }
         }
@@ -171,9 +186,9 @@ namespace Rant
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void PushState(State state)
         {
-            if (_stateCount >= Engine.MaxStackSize)
+            if (_stateCount >= RantEngine.MaxStackSize)
             {
-                throw new RantException(_mainSource, null, "Exceeded maximum stack size of " + Engine.MaxStackSize + ".");
+                throw new RantException(_mainSource, null, "Exceeded maximum stack size of " + RantEngine.MaxStackSize + ".");
             }
             if (_stateStack.Any()) _prevState = _stateStack.Peek();
             _stateCount++;
@@ -201,7 +216,7 @@ namespace Rant
 
         #endregion
         
-        public Interpreter(Engine engine, Pattern input, RNG rng, int limitChars = 0)
+        public Interpreter(RantEngine engine, RantPattern input, RNG rng, int limitChars = 0)
         {
             _mainSource = input;
             _rng = rng;
@@ -248,7 +263,7 @@ namespace Rant
                 while (!reader.End)
                 {
                     // Fetch the next token in the stream without consuming it
-                    token = reader.PeekToken();
+                    token = reader.ReadToken();
                     
                     // Error on illegal closure
                     if (BracketPairs.All.ContainsClosing(token.Identifier))
@@ -257,7 +272,7 @@ namespace Rant
                     }
 
                     // DoElement will return true if the interpreter should skip to the top of the stack
-                    if (DoElement(reader, state))
+                    if (DoElement(token, reader, state))
                     {
                         goto next;
                     }
@@ -284,11 +299,11 @@ namespace Rant
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private bool DoElement(PatternReader reader, State state)
+        private bool DoElement(Token<TokenType> token, PatternReader reader, State state)
         {
             TokenFunc func;
-            if (TokenFuncs.TryGetValue(reader.PeekToken().Identifier, out func)) return func(this, reader, state);
-            Print(reader.ReadToken().Value);
+            if (TokenFuncs.TryGetValue(token.Identifier, out func)) return func(this, token, reader, state);
+            Print(token.Value);
             return false;
         }
     }

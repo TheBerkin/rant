@@ -29,6 +29,7 @@ namespace Rant.Arithmetic
                 {"/=", MathTokenType.DivAssign},
                 {"%=", MathTokenType.ModAssign},
                 {"^=", MathTokenType.PowAssign},
+                {"|", MathTokenType.Pipe},
                 {new Regex(@"(\d+(\.\d+)?|\.\d+)"), MathTokenType.Number},
                 {new Regex(@"[a-zA-Z_][a-zA-Z0-9_]*"), MathTokenType.Name}
             };

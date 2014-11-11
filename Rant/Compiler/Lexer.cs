@@ -10,7 +10,7 @@ namespace Rant.Compiler
         private const RegexOptions DefaultOptions = RegexOptions.Compiled | RegexOptions.ExplicitCapture;
 
         public static readonly Regex EscapeRegex = new Regex(@"\\((?<count>\d+((\.\d+)?[kMB])?),)?((?<code>[^u\s\r\n])|u(?<unicode>[0-9a-f]{4}))", DefaultOptions);
-        public static readonly Regex RegexRegex = new Regex(@"/(.*?[^\\])?/i?", DefaultOptions);
+        public static readonly Regex RegexRegex = new Regex(@"//(.*?[^\\])?//i?", DefaultOptions);
 
         private static readonly Regex WhitespaceRegex = new Regex(@"\s+", DefaultOptions);
         private static readonly Regex BlackspaceRegex = new Regex(@"(^\s+|\s*[\r\n]+\s*|\s+$)", DefaultOptions | RegexOptions.Multiline);
@@ -46,6 +46,8 @@ namespace Rant.Compiler
                 {"-", TokenType.Hyphen},
                 {"!", TokenType.Exclamation},
                 {"$", TokenType.Dollar},
+                {"=", TokenType.Equal},
+                {"&", TokenType.Ampersand},
                 {CommentRegex, TokenType.Ignore, 3},
                 {BlackspaceRegex, TokenType.Ignore, 2},
                 {WhitespaceRegex, TokenType.Whitespace}

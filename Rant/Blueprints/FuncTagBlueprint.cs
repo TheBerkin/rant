@@ -9,14 +9,14 @@ namespace Rant.Blueprints
 {
     internal sealed class FuncTagBlueprint : Blueprint
     {
-        public Pattern Source { get; private set; }
+        public RantPattern Source { get; private set; }
         public Stringe Name { get; private set; }
 
         private readonly Interpreter.FuncSig _tagDef;
 
         private readonly Argument[] _args;
 
-        public FuncTagBlueprint(Interpreter interpreter, Pattern source, Stringe name, IEnumerable<Token<TokenType>>[] argData = null)
+        public FuncTagBlueprint(Interpreter interpreter, RantPattern source, Stringe name, IEnumerable<Token<TokenType>>[] argData = null)
             : base(interpreter)
         {
             Source = source;

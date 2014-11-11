@@ -36,16 +36,16 @@ namespace Rant
                 return true;
             }
 
-            private State(Interpreter ii, Pattern derivedSource, IEnumerable<Token<TokenType>> tokens,
+            private State(Interpreter ii, RantPattern derivedSource, IEnumerable<Token<TokenType>> tokens,
                 ChannelStack output)
             {
                 _interpreter = ii;
                 _output = output;
-                _reader = new PatternReader(new Pattern(derivedSource, tokens));
+                _reader = new PatternReader(new RantPattern(derivedSource, tokens));
                 _sharesOutput = (output == _interpreter._output && _interpreter.PrevState != null) || (_interpreter._stateStack.Any() && output == _interpreter._stateStack.Peek().Output);
             }
 
-            public State(Interpreter ii, Pattern source, ChannelStack output)
+            public State(Interpreter ii, RantPattern source, ChannelStack output)
             {
                 _interpreter = ii;
                 _output = output;
@@ -100,7 +100,7 @@ namespace Rant
             /// <param name="interpreter">The interpreter that will read the tokens.</param>
             /// <returns></returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static State Create(Pattern source, Interpreter interpreter)
+            public static State Create(RantPattern source, Interpreter interpreter)
             {
                 return new State(interpreter, source, interpreter.CurrentState.Output);
             }
@@ -114,7 +114,7 @@ namespace Rant
             /// <param name="output">The output of the state. Excluding this will create a new output.</param>
             /// <returns></returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static State CreateSub(Pattern derivedSource, IEnumerable<Token<TokenType>> tokens,
+            public static State CreateSub(RantPattern derivedSource, IEnumerable<Token<TokenType>> tokens,
                 Interpreter interpreter, ChannelStack output = null)
             {
                 return new State(interpreter, derivedSource, tokens, output ?? new ChannelStack(interpreter.CharLimit));

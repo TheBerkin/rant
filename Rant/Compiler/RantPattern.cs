@@ -8,7 +8,7 @@ namespace Rant.Compiler
     /// <summary>
     /// Represents a compiled pattern that can be executed by the engine. It is recommended to use this class when running the same patern multiple times.
     /// </summary>
-    public sealed class Pattern
+    public sealed class RantPattern
     {
         private readonly string _code;
         private readonly IEnumerable<Token<TokenType>> _tokens;
@@ -59,7 +59,7 @@ namespace Rant.Compiler
             get { return _tokens; }
         }
 
-        internal Pattern(string name, SourceType type, string code)
+        internal RantPattern(string name, SourceType type, string code)
         {
             _name = name;
             _type = type;
@@ -67,7 +67,7 @@ namespace Rant.Compiler
             _tokens = Lexer.GenerateTokens(code);
         }
 
-        internal Pattern(Pattern derived, IEnumerable<Token<TokenType>> sub)
+        internal RantPattern(RantPattern derived, IEnumerable<Token<TokenType>> sub)
         {
             _name = derived._name;
             _type = derived._type;
@@ -77,7 +77,7 @@ namespace Rant.Compiler
             _tokens = sub;
         }
 
-        internal Pattern(string name, Pattern derived, IEnumerable<Token<TokenType>> sub)
+        internal RantPattern(string name, RantPattern derived, IEnumerable<Token<TokenType>> sub)
         {
             _name = name;
             _type = derived._type;
@@ -92,9 +92,9 @@ namespace Rant.Compiler
         /// </summary>
         /// <param name="code">The code to compile.</param>
         /// <returns></returns>
-        public static Pattern FromString(string code)
+        public static RantPattern FromString(string code)
         {
-            return new Pattern("Source", SourceType.String, code);
+            return new RantPattern("Source", SourceType.String, code);
         }
 
         /// <summary>
@@ -103,20 +103,20 @@ namespace Rant.Compiler
         /// <param name="name">The name to give the source.</param>
         /// <param name="code">The code to compile.</param>
         /// <returns></returns>
-        public static Pattern FromString(string name, string code)
+        public static RantPattern FromString(string name, string code)
         {
-            return new Pattern(name, SourceType.String, code);
+            return new RantPattern(name, SourceType.String, code);
         }
 
-        internal static Pattern Derived(Pattern source, IEnumerable<Token<TokenType>> tokens)
+        internal static RantPattern Derived(RantPattern source, IEnumerable<Token<TokenType>> tokens)
         {
-            return new Pattern(source, tokens);
+            return new RantPattern(source, tokens);
         }
         
         // Used for applying a different name to subroutines
-        internal static Pattern Derived(string name, Pattern source, IEnumerable<Token<TokenType>> tokens)
+        internal static RantPattern Derived(string name, RantPattern source, IEnumerable<Token<TokenType>> tokens)
         {
-            return new Pattern(name, source, tokens);
+            return new RantPattern(name, source, tokens);
         }
 
         /// <summary>
@@ -124,9 +124,9 @@ namespace Rant.Compiler
         /// </summary>
         /// <param name="path">The path to the file to load.</param>
         /// <returns></returns>
-        public static Pattern FromFile(string path)
+        public static RantPattern FromFile(string path)
         {
-            return new Pattern(Path.GetFileName(path), SourceType.File, File.ReadAllText(path));
+            return new RantPattern(Path.GetFileName(path), SourceType.File, File.ReadAllText(path));
         }
 
         /// <summary>

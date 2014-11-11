@@ -31,9 +31,9 @@
     <DocumentationFile>bin\Release\Rant.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Berkin-Release|AnyCPU'">
-    <OutputPath>bin\Berkin-Release\</OutputPath>
+    <OutputPath>..\..\..\..\Desktop\Rant\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Manhood.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Rant.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arithmetic\Expressions\AbsExpression.cs" />
     <Compile Include="Arithmetic\Expressions\BinaryOperatorExpression.cs" />
     <Compile Include="Arithmetic\Expressions\Expression.cs" />
     <Compile Include="Arithmetic\Expressions\NameExpression.cs" />
@@ -70,7 +71,7 @@
     <Compile Include="Arithmetic\Lexer.cs" />
     <Compile Include="Arithmetic\Lexer.Static.cs" />
     <Compile Include="Arithmetic\Parselets\BinaryOperatorParselet.cs" />
-    <Compile Include="Arithmetic\Parselets\GroupParselet.cs" />
+    <Compile Include="Arithmetic\Parselets\AbsParselet.cs" />
     <Compile Include="Arithmetic\Parselets\IInfixParselet.cs" />
     <Compile Include="Arithmetic\Parselets\IPrefixParselet.cs" />
     <Compile Include="Arithmetic\Parselets\NameParselet.cs" />
@@ -90,12 +91,15 @@
     <Compile Include="Blueprints\ReplacerBlueprint.cs" />
     <Compile Include="Blueprints\SubCallBlueprint.cs" />
     <Compile Include="Blueprints\FuncTagBlueprint.cs" />
+    <Compile Include="Vocabulary\Carrier.cs" />
     <Compile Include="Comparison.cs" />
     <Compile Include="Compiler\BracketPairs.cs" />
     <Compile Include="Compiler\Lexer.cs" />
-    <Compile Include="Dictionary.Loader.cs" />
-    <Compile Include="Engine.cs" />
-    <Compile Include="Engine.Vocab.cs" />
+    <Compile Include="Vocabulary\CarrierSyncState.cs" />
+    <Compile Include="Vocabulary\Dic2Lexer.cs" />
+    <Compile Include="Vocabulary\RantDictionary.Loader.cs" />
+    <Compile Include="RantEngine.cs" />
+    <Compile Include="RantEngine.Vocab.cs" />
     <Compile Include="BlockAttribs.cs" />
     <Compile Include="HookCollection.cs" />
     <Compile Include="IndefiniteArticle.cs" />
@@ -105,11 +109,11 @@
     <Compile Include="Interpreter.Synchronizers.cs" />
     <Compile Include="Interpreter.Functions.cs" />
     <Compile Include="Interpreter.TokenFuncs.cs" />
-    <Compile Include="IVocabulary.cs" />
+    <Compile Include="Vocabulary\IVocabulary.cs" />
     <Compile Include="Limit.cs" />
     <Compile Include="ParamType.cs" />
     <Compile Include="RantException.cs" />
-    <Compile Include="NsfwFilter.cs" />
+    <Compile Include="Vocabulary\NsfwFilter.cs" />
     <Compile Include="Capitalization.cs" />
     <Compile Include="Channel.cs" />
     <Compile Include="Output.cs" />
@@ -118,13 +122,13 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="NumberFormat.cs" />
     <Compile Include="Numerals.cs" />
-    <Compile Include="Query.cs" />
+    <Compile Include="Vocabulary\Query.cs" />
     <Compile Include="Repeater.cs" />
     <Compile Include="RNG.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DictionaryEntry.cs" />
+    <Compile Include="Vocabulary\RantDictionaryEntry.cs" />
     <Compile Include="Compiler\TokenType.cs" />
-    <Compile Include="Compiler\Pattern.cs" />
+    <Compile Include="Compiler\RantPattern.cs" />
     <Compile Include="Compiler\SourceType.cs" />
     <Compile Include="PatternReader.cs" />
     <Compile Include="Interpreter.State.cs" />
@@ -143,8 +147,10 @@
     <Compile Include="VarStore.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Vocabulary.cs" />
-    <Compile Include="Dictionary.cs" />
+    <Compile Include="Vocabulary\RantVocabulary.cs" />
+    <Compile Include="Vocabulary\RantDictionary.cs" />
+    <Compile Include="Vocabulary\RantDictionaryTerm.cs" />
+    <Compile Include="Vocabulary\VocabUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Rant License.txt">

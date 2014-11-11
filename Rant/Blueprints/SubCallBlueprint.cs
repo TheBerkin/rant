@@ -11,7 +11,7 @@ namespace Rant.Blueprints
         private readonly Subroutine _subroutine;
         private readonly Argument[] _args;
 
-        public SubCallBlueprint(Interpreter interpreter, Pattern source, Subroutine subroutine, IEnumerable<Token<TokenType>>[] args) : base(interpreter)
+        public SubCallBlueprint(Interpreter interpreter, RantPattern source, Subroutine subroutine, IEnumerable<Token<TokenType>>[] args) : base(interpreter)
         {
             _subroutine = subroutine;
             if (args == null)
