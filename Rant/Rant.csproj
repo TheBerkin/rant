@@ -33,8 +33,4 @@
     <EmbeddedResource Include="Localization\en-US.lang" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
 </Project>
