@@ -831,14 +831,6 @@ namespace Rant.Core.IO
             return _buffer;
         }
 
-        /// <summary>
-        /// Closes the reader and the underlying stream.
-        /// </summary>
-        public void Close()
-        {
-            BaseStream.Close();
-        }
-
         [StructLayout(LayoutKind.Explicit)]
         private struct IntermediateByte
         {

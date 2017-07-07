@@ -480,13 +480,5 @@ namespace Rant.Core.IO
                 Write(value.Value);
             return this;
         }
-
-        /// <summary>
-        /// Closes the writer and the underlying stream.
-        /// </summary>
-        public void Close()
-        {
-            BaseStream.Close();
-        }
     }
 }
