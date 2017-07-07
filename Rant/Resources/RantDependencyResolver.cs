@@ -26,6 +26,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace Rant.Resources
@@ -46,8 +47,9 @@ namespace Rant.Resources
         /// <returns></returns>
         public virtual bool TryResolvePackage(RantPackageDependency depdendency, out RantPackage package)
         {
+            var currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             package = null;
-            string path = Path.Combine(Environment.CurrentDirectory, $"{depdendency.ID}.rantpkg");
+            string path = Path.Combine(currentDirectory, $"{depdendency.ID}.rantpkg");
             if (!File.Exists(path))
             {
                 RantPackageVersion version;
@@ -56,7 +58,7 @@ namespace Rant.Resources
 				path = Directory.GetFiles(Environment.CurrentDirectory, $"{depdendency.ID}*.rantpkg", SearchOption.AllDirectories).FirstOrDefault(p =>
 #else
                 path =
-                    Directory.EnumerateFiles(Environment.CurrentDirectory, "*.rantpkg", SearchOption.AllDirectories)
+                    Directory.EnumerateFiles(currentDirectory, "*.rantpkg", SearchOption.AllDirectories)
                         .FirstOrDefault(p =>
 #endif
 
