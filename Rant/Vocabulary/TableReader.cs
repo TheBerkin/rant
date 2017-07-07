@@ -75,11 +75,6 @@ namespace Rant.Vocabulary
 			return false;
 		}
 
-		private static bool ReadArg(string str, int len, ref int i, out string result)
-		{
-			
-		}
-
 #if !UNITY
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
