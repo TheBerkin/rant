@@ -59,7 +59,7 @@ namespace Rant
             if (!objPropMap.TryGetValue(type, out map))
             {
                 objPropMap[type] = map = new Dictionary<string, PropertyInfo>();
-                foreach (var prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(p => p.CanRead))
+                foreach (var prop in type.GetTypeInfo().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(p => p.CanRead))
                 {
 #if UNITY
 					if ((attrName = prop.GetCustomAttributes(typeof(RantArgAttribute), true).Cast<RantArgAttribute>().FirstOrDefault()) != null)

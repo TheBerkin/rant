@@ -32,6 +32,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using Rant.Core.Formatting;
+using System.Reflection;
 
 namespace Rant.Core.Utilities
 {
@@ -61,14 +62,14 @@ namespace Rant.Core.Utilities
 
 		private static void CacheEnum(Type type)
 		{
-			if (!type.IsEnum || _enumTable.ContainsKey(type)) return;
+			if (!type.GetTypeInfo().IsEnum || _enumTable.ContainsKey(type)) return;
 			_enumTable[type] = new HashSet<string>(Enum.GetNames(type));
 		}
 
 		public static bool TryParseEnum(Type enumType, string modeString, out object value)
 		{
 			value = null;
-			if (!enumType.IsEnum) throw new ArgumentException("TEnum must be an enumerated type.");
+			if (!enumType.GetTypeInfo().IsEnum) throw new ArgumentException("TEnum must be an enumerated type.");
 			CacheEnum(enumType);
 			string name = SnakeToCamel(modeString.Trim());
 			var cache = _enumTable[enumType];
@@ -338,7 +339,7 @@ namespace Rant.Core.Utilities
 
 		public static string GetEnumListString(Type enumType)
 		{
-			if (!enumType.IsEnum) return String.Empty;
+			if (!enumType.GetTypeInfo().IsEnum) return String.Empty;
 			var sb = new StringBuilder();
 			foreach (var name in Enum.GetNames(enumType).OrderBy(str => str).Select(CamelToSnake))
 			{

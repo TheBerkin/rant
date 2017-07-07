@@ -62,16 +62,16 @@ namespace Rant.Core.Framework
             // Sort out the parameter types for the function
             Parameters = new RantFunctionParameter[parameters.Length - 1];
             RawParameters = parameters;
-            Type type;
-            RantFunctionParameterType rantType;
             for (int i = 1; i < parameters.Length; i++)
             {
                 // Resolve Rant parameter type from .NET type
-                type = parameters[i].ParameterType;
+                var type = parameters[i].ParameterType;
+                var typeInfo = type.GetTypeInfo();
                 if (type.IsArray && i == parameters.Length - 1)
                     type = type.GetElementType();
 
-                if (type == typeof(RST) || type.IsSubclassOf(typeof(RST)))
+                RantFunctionParameterType rantType;
+                if (type == typeof(RST) || typeInfo.IsSubclassOf(typeof(RST)))
                 {
                     rantType = RantFunctionParameterType.Pattern;
                 }
@@ -79,9 +79,9 @@ namespace Rant.Core.Framework
                 {
                     rantType = RantFunctionParameterType.String;
                 }
-                else if (type.IsEnum)
+                else if (typeInfo.IsEnum)
                 {
-                    rantType = type.GetCustomAttributes(typeof(FlagsAttribute), false).Any()
+                    rantType = typeInfo.GetCustomAttributes(typeof(FlagsAttribute), false).Any()
                         ? RantFunctionParameterType.Flags
                         : RantFunctionParameterType.Mode;
                 }

@@ -92,8 +92,8 @@ namespace Rant.Core.Utilities
                     lstFuncTypes.Add(type);
             }
 
-            _funcTypes = lstFuncTypes.OrderBy(t => t.GetGenericArguments().Length).ToArray();
-            _voidTypes = lstVoidTypes.OrderBy(t => t.GetGenericArguments().Length).ToArray();
+            _funcTypes = lstFuncTypes.OrderBy(t => t.GetTypeInfo().GetGenericArguments().Length).ToArray();
+            _voidTypes = lstVoidTypes.OrderBy(t => t.GetTypeInfo().GetGenericArguments().Length).ToArray();
         }
 
         public static Witchcraft Create(MethodInfo methodInfo)

@@ -387,13 +387,14 @@ namespace Rant.Core.IO
         public EasyWriter Write<TKey, TValue>(Dictionary<TKey, TValue> value)
         {
             var ktype = typeof(TKey);
+            var kTypeInfo = ktype.GetTypeInfo();
             bool kIsString = ktype == typeof(string);
             var vtype = typeof(TValue);
             bool vIsString = vtype == typeof(string);
 
-            if (!ktype.IsValueType && !kIsString)
+            if (!kTypeInfo.IsValueType && !kIsString)
                 throw new ArgumentException("TKey must be either a value type or System.String.");
-            if (!vtype.IsValueType && !vIsString)
+            if (!kTypeInfo.IsValueType && !vIsString)
                 throw new ArgumentException("TValue must be either a value type or System.String.");
 
             Write(value.Count);

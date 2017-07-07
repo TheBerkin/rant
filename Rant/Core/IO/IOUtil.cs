@@ -79,10 +79,11 @@ namespace Rant.Core.IO
 
         public static void ConvertStructEndians<TStruct>(ref TStruct o)
         {
-            if (!typeof(TStruct).IsValueType)
+            var typeInfo = typeof(TStruct).GetTypeInfo();
+            if (!typeInfo.IsValueType)
                 throw new ArgumentException("TStruct must be a value type.");
             object boxed = o;
-            foreach (var field in typeof(TStruct).GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+            foreach (var field in typeInfo.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
             )
             {
                 var ftype = field.FieldType;

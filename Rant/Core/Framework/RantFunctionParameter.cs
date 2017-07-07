@@ -29,6 +29,7 @@ using System.Linq;
 
 using Rant.Core.Utilities;
 using Rant.Metadata;
+using System.Reflection;
 
 namespace Rant.Core.Framework
 {
@@ -51,11 +52,12 @@ namespace Rant.Core.Framework
 
         public IEnumerable<IRantModeValue> GetEnumValues()
         {
-            if (!NativeType.IsEnum) yield break;
+            var typeInfo = NativeType.GetTypeInfo();
+            if (!typeInfo.IsEnum) yield break;
             foreach (string value in Enum.GetNames(NativeType))
             {
                 yield return new RantModeValue(Util.CamelToSnake(value),
-                (NativeType.GetMember(value)[0].GetCustomAttributes(typeof(RantDescriptionAttribute), true).FirstOrDefault() as
+                (typeInfo.GetMember(value)[0].GetCustomAttributes(typeof(RantDescriptionAttribute), true).FirstOrDefault() as
                     RantDescriptionAttribute)?.Description ?? string.Empty);
             }
         }

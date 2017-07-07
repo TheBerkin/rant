@@ -56,7 +56,7 @@ namespace Rant.Core.Framework
             if (_loaded) return;
 
             // Get every single private static method in the RantFunctions class
-            foreach (var method in typeof(RantFunctionRegistry).GetMethods(BindingFlags.Static | BindingFlags.NonPublic))
+            foreach (var method in typeof(RantFunctionRegistry).GetTypeInfo().GetMethods(BindingFlags.Static | BindingFlags.NonPublic))
             {
                 if (!method.IsStatic) continue;
                 var attr =
