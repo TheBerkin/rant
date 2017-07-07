@@ -42,7 +42,7 @@ namespace Rant.Core.Formatting
         static Unicode()
         {
             _unicodeCharacterMap = new Dictionary<string, uint>();
-            var ass = Assembly.GetExecutingAssembly();
+            var ass = typeof(Unicode).GetTypeInfo().Assembly;
             using (var stream = ass.GetManifestResourceStream("Rant.Core.Formatting.unicode_code_points.dat"))
             using (var reader = new StreamReader(stream))
             {

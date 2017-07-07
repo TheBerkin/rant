@@ -51,7 +51,7 @@ namespace Rant.Localization
         {
             try
             {
-                var ass = Assembly.GetExecutingAssembly();
+                var ass = typeof(Txtres).GetTypeInfo().Assembly;
                 string lang = CultureInfo.CurrentCulture.Name;
                 using (var stream =
                     ass.GetManifestResourceStream($"{LanguageResourceNamespace}.{CultureInfo.CurrentCulture.Name}.lang")
@@ -173,7 +173,7 @@ namespace Rant.Localization
 				{
 					using (
 						var stream =
-							Assembly.GetExecutingAssembly().GetManifestResourceStream($"{LanguageResourceNamespace}.{_langName}.lang"))
+							typeof(Txtres).GetTypeInfo().Assembly.GetManifestResourceStream($"{LanguageResourceNamespace}.{_langName}.lang"))
 					{
 						if (stream == null) return;
 						table = new Dictionary<string, string>();
