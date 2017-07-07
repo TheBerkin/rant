@@ -358,7 +358,7 @@ namespace Rant.Core.IO
             if (prefixLength)
             {
                 if (use64bit)
-                    Write(array.LongLength);
+                    Write((long)array.Length); //TODO: The LongLenth property was unavailable in .NET Standard 1.6. It should be restored once it is available again.
                 else
                     Write(array.Length);
             }
