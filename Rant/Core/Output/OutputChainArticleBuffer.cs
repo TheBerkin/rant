@@ -98,11 +98,11 @@ namespace Rant.Core.Output
         {
             if (string.IsNullOrEmpty(value)) return false;
             return
-                allowWords.Any(word => string.Equals(word, value, StringComparison.InvariantCultureIgnoreCase))
-                || allowPrefixes.Any(pfx => value.StartsWith(pfx, StringComparison.InvariantCultureIgnoreCase))
+                allowWords.Any(word => string.Equals(word, value, StringComparison.OrdinalIgnoreCase))
+                || allowPrefixes.Any(pfx => value.StartsWith(pfx, StringComparison.OrdinalIgnoreCase))
                 || vowels.Contains(value[0])
-                && !ignorePrefixes.Any(pfx => value.StartsWith(pfx, StringComparison.InvariantCultureIgnoreCase))
-                && !ignoreWords.Any(word => string.Equals(word, value, StringComparison.InvariantCultureIgnoreCase));
+                && !ignorePrefixes.Any(pfx => value.StartsWith(pfx, StringComparison.OrdinalIgnoreCase))
+                && !ignoreWords.Any(word => string.Equals(word, value, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

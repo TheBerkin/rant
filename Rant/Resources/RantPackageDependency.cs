@@ -137,7 +137,7 @@ namespace Rant.Resources
         public override bool Equals(object obj)
         {
             var d = obj as RantPackageDependency;
-            return d != null && string.Equals(ID, d.ID, StringComparison.InvariantCulture);
+            return d != null && string.Equals(ID, d.ID, StringComparison.Ordinal);
         }
     }
 }

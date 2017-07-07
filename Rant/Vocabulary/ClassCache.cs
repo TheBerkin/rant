@@ -106,7 +106,7 @@ namespace Rant.Vocabulary
 			        // Exclude overridden hidden classes
 			        .Except(dictionary.IncludedHiddenClasses)
 			        // Exclude hidden classes filtered for
-			        .Where(cl => !ruleArray.Any(rule => rule.ShouldMatch && String.Equals(rule.Class, cl, StringComparison.InvariantCultureIgnoreCase))).ToArray();
+			        .Where(cl => !ruleArray.Any(rule => rule.ShouldMatch && String.Equals(rule.Class, cl, StringComparison.OrdinalIgnoreCase))).ToArray();
 
 		        // Get initial pool
 				if (hide.Length > 0)

@@ -290,7 +290,7 @@ namespace Rant.Vocabulary.Utilities
             for (int j = i + 1; j <= minor.Length; j++)
             {
                 if (j - i > length
-                    && (matchIndex = major.IndexOf(minor.Substring(i, j - i), StringComparison.InvariantCulture)) > -1)
+                    && (matchIndex = major.IndexOf(minor.Substring(i, j - i), StringComparison.Ordinal)) > -1)
                 {
                     majorStart = matchIndex;
                     minorStart = i;

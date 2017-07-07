@@ -120,11 +120,11 @@ namespace Rant.Core.Compiler.Syntax
                         sb.AddOutputWriter();
                         yield return _args[i];
                         var val = sb.Return().Main;
-                        if (val.Equals("true", StringComparison.InvariantCultureIgnoreCase))
+                        if (val.Equals("true", StringComparison.OrdinalIgnoreCase))
                         {
                             args[i] = true;
                         }
-                        else if (val.Equals("false", StringComparison.InvariantCultureIgnoreCase))
+                        else if (val.Equals("false", StringComparison.OrdinalIgnoreCase))
                         {
                             args[i] = false;
                         }

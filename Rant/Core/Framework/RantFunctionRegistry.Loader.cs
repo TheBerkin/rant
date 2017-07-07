@@ -41,10 +41,10 @@ namespace Rant.Core.Framework
         private static bool _loaded = false;
 
         private static readonly Dictionary<string, RantFunction> FunctionTable =
-            new Dictionary<string, RantFunction>(StringComparer.InvariantCultureIgnoreCase);
+            new Dictionary<string, RantFunction>(StringComparer.OrdinalIgnoreCase);
 
         private static readonly Dictionary<string, string> AliasTable =
-            new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         static RantFunctionRegistry()
         {
@@ -91,7 +91,7 @@ namespace Rant.Core.Framework
         }
 
         public static IEnumerable<string> GetAliases(string funcName) =>
-            AliasTable.Where(pair => string.Equals(funcName, pair.Value, StringComparison.InvariantCultureIgnoreCase))
+            AliasTable.Where(pair => string.Equals(funcName, pair.Value, StringComparison.OrdinalIgnoreCase))
                 .Select(pair => pair.Key);
 
         private static string ResolveAlias(string alias)

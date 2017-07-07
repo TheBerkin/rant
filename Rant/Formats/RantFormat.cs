@@ -98,7 +98,7 @@ namespace Rant.Formats
 				"of", "in", "at", "as", "into", "if", "are", "you", "why", "from",
 				"with", "these", "those", "to"
 			},
-			StringComparer.InvariantCultureIgnoreCase);
+			StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
 		/// The writing system for the current format.

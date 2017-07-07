@@ -294,8 +294,8 @@ namespace Rant.Core.Utilities
 		{
 			if (IsNullOrWhiteSpace(input)) return false;
 			string v = input.Trim();
-			if (String.Equals(v, "false", StringComparison.InvariantCultureIgnoreCase) || v == "0") return false;
-			if (String.Equals(v, "true", StringComparison.InvariantCultureIgnoreCase)) return true;
+			if (String.Equals(v, "false", StringComparison.OrdinalIgnoreCase) || v == "0") return false;
+			if (String.Equals(v, "true", StringComparison.OrdinalIgnoreCase)) return true;
 			return ParseDouble(v, out double d);
 		}
 

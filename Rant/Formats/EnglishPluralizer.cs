@@ -50,7 +50,7 @@ namespace Rant.Formats
 			});
 
 		private static readonly Dictionary<string, string> irregulars =
-			new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+			new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
 			{
 				{ "man", "men" },
 				{ "safe", "safes" },
@@ -94,7 +94,7 @@ namespace Rant.Formats
 				{ "genesis", "geneses" }
 			};
 
-        private static readonly HashSet<string> ignore = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase)
+        private static readonly HashSet<string> ignore = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "deer",
             "fish",

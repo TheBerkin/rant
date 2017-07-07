@@ -1992,7 +1992,7 @@ namespace Rant.Core.Framework
 		[RantDescription("Prints a boolean value indicating whether the two values have equal string representations, ignoring case.")]
 		private static void CompEqualsIgnoreCase(Sandbox sb, string a, string b)
 		{
-			sb.Print(String.Equals(a, b, StringComparison.InvariantCultureIgnoreCase) ? TRUE : FALSE);
+			sb.Print(String.Equals(a, b, StringComparison.OrdinalIgnoreCase) ? TRUE : FALSE);
 		}
 
 		[RantFunction("ne")]
@@ -2006,7 +2006,7 @@ namespace Rant.Core.Framework
 		[RantDescription("Prints a boolean value indicating whether two values do not have equal string representations, ignoring case.")]
 		private static void CompNotEqualsIgnoreCase(Sandbox sb, string a, string b)
 		{
-			sb.Print(String.Equals(a, b, StringComparison.InvariantCultureIgnoreCase) ? FALSE : TRUE);
+			sb.Print(String.Equals(a, b, StringComparison.OrdinalIgnoreCase) ? FALSE : TRUE);
 		}
 
 		[RantFunction("gt")]
