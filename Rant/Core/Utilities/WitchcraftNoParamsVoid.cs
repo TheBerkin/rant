@@ -5,12 +5,11 @@ namespace Rant.Core.Utilities
 {
 	internal class WitchcraftNoParamsVoid : WitchcraftVoid
 	{
-		private readonly XAction<Sandbox> _func;
+		private readonly Action<Sandbox> _func;
 
 		public WitchcraftNoParamsVoid(MethodInfo methodInfo)
 		{
-			_func = (XAction<Sandbox>)Delegate.CreateDelegate(
-				typeof(XAction<Sandbox>), methodInfo);
+			_func = (Action<Sandbox>)methodInfo.CreateDelegate(typeof(Action<Sandbox>));
 		}
 
 		public override object Invoke(Sandbox sb, object[] args)
