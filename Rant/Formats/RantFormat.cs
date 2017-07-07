@@ -50,7 +50,7 @@ namespace Rant.Formats
         static RantFormat()
         {
             English = new RantFormat();
-			German = new RantFormat(CultureInfo.GetCultureInfo("de-DE"),
+			German = new RantFormat(new CultureInfo("de-DE"),
 				new WritingSystem(new[]
 				{
 					'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
