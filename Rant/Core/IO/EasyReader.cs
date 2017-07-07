@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -652,9 +653,9 @@ namespace Rant.Core.IO
             var vtype = typeof(TValue);
             bool vIsString = vtype == typeof(string);
 
-            if (!ktype.IsValueType && !kIsString)
+            if (!ktype.GetTypeInfo().IsValueType && !kIsString)
                 throw new ArgumentException("TKey must be either a value type or System.String.");
-            if (!vtype.IsValueType && !vIsString)
+            if (!vtype.GetTypeInfo().IsValueType && !vIsString)
                 throw new ArgumentException("TValue must be either a value type or System.String.");
 
             bool isKNumeric = IOUtil.IsNumericType(typeof(TKey));
@@ -702,7 +703,7 @@ namespace Rant.Core.IO
         /// <returns></returns>
         public TEnum ReadEnum<TEnum>() where TEnum : struct, IConvertible
         {
-            if (!typeof(TEnum).IsEnum)
+            if (!typeof(TEnum).GetTypeInfo().IsEnum)
                 throw new ArgumentException("T must be an enumerated type.");
             byte size = (byte)Marshal.SizeOf(Enum.GetUnderlyingType(typeof(TEnum)));
             var data = ReadAndFormat(size);
@@ -730,9 +731,9 @@ namespace Rant.Core.IO
         /// <returns></returns>
         public TStruct ReadStruct<TStruct>(bool convertEndian = true)
         {
-            if (!typeof(TStruct).IsValueType)
+            if (!typeof(TStruct).GetTypeInfo().IsValueType)
                 throw new ArgumentException("TStruct must be a value type.");
-            int size = Marshal.SizeOf(typeof(TStruct));
+            int size = Marshal.SizeOf<TStruct>();
             bool numeric = IOUtil.IsNumericType(typeof(TStruct));
             var data = numeric ? ReadAndFormat(size) : ReadBytes(size);
             var ptr = Marshal.AllocHGlobal(size);

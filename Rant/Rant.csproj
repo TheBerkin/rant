@@ -1,341 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A4B6FD1A-44A6-42D2-B4AA-57BC85D2CDD7}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rant</RootNamespace>
-    <AssemblyName>Rant</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <PackageId>Rant</PackageId>
+    <PackageVersion>3.0.3</PackageVersion>
+    <Authors>Nicholas Fleck, Andrew Rogers</Authors>
+    <Description>The versatile procedural text engine</Description>
+    <PackageProjectUrl>https://github.com/TheBerkin/Rant</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/TheBerkin/Rant/master/LICENSE</PackageLicenseUrl>
+    <Copyright>Copyright 2017 (c) Nicholas Fleck</Copyright>
+    <PackageTags>rant pcgen pcg procedural text string templating engine language dsl</PackageTags>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>../bin/Release</OutputPath>
   </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>../bin/Debug</OutputPath>
   </PropertyGroup>
-  <PropertyGroup>
-    <DelaySign>false</DelaySign>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>..\bin\Debug\Rant.xml</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Release\Rant.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Install|AnyCPU' ">
-    <OutputPath>C:\rant\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>C:\rant\RantEngine.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Install|x86' ">
-    <OutputPath>C:\rant\x86\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>C:\rant\x86\Rant.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Install|x64' ">
-    <OutputPath>C:\rant\x64\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>C:\rant\x64\Rant.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\bin\MainBuild\x86\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\bin\MainBuild\x64\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\bin\MainBuild\x86\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>..\bin\MainBuild\Rant.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\bin\MainBuild\x64\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>..\bin\MainBuild\Rant.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Unity'">
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <AssemblyName>Rant.Unity</AssemblyName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
-    <OutputPath>..\bin\UnityBuild\</OutputPath>
-    <DefineConstants>TRACE;UNITY</DefineConstants>
-    <DocumentationFile>..\bin\UnityBuild\Rant.Unity.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|x86'">
-    <OutputPath>..\bin\UnityBuild\x86\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>..\bin\UnityBuild\x86\RantEngine-Unity.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|x64'">
-    <OutputPath>..\bin\UnityBuild\x64\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>..\bin\UnityBuild\x64\RantEngine-Unity.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <None Remove="Core\Formatting\unicode_code_points.dat" />
+    <None Remove="Localization\de-DE.lang" />
+    <None Remove="Localization\en-US.lang" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Core\Compiler\CompileContext.cs" />
-    <Compile Include="Core\Compiler\Parsing\BlockParser.cs" />
-    <Compile Include="Core\Compiler\Parsing\QueryParser.cs" />
-    <Compile Include="Core\Compiler\Parsing\SequenceParser.cs" />
-    <Compile Include="Core\Compiler\Parsing\Parser.cs" />
-    <Compile Include="Core\Compiler\Parsing\TagParser.cs" />
-    <Compile Include="Core\Compiler\RantCompiler.cs" />
-    <Compile Include="Core\Compiler\RantLexer.cs" />
-    <Compile Include="Core\Compiler\Syntax\DeserializeRequest.cs" />
-    <Compile Include="Core\Compiler\Syntax\RSTAttribute.cs" />
-    <Compile Include="Core\Constructs\SubroutineParameter.cs" />
-    <Compile Include="Core\Constructs\SubroutineParameterType.cs" />
-    <Compile Include="Core\Compiler\Token.cs" />
-    <Compile Include="Core\Compiler\LineCol.cs" />
-    <Compile Include="Core\Constructs\AttribPersistence.cs" />
-    <Compile Include="Core\Constructs\BlockAttribManager.cs" />
-    <Compile Include="Core\Constructs\QueryBuilder.cs" />
-    <Compile Include="Core\Constructs\Subroutine.cs" />
-    <Compile Include="Core\Constructs\SyncManager.cs" />
-    <Compile Include="Core\Formatting\Accent.cs" />
-    <Compile Include="Core\Formatting\CharConverter.cs" />
-    <Compile Include="Core\Formatting\CharConversion.cs" />
-    <Compile Include="Core\Formatting\Unicode.cs" />
-    <Compile Include="Core\Sandbox.State.cs" />
-    <Compile Include="Core\Utilities\WitchcraftNoParams.cs" />
-    <Compile Include="Core\Utilities\WitchcraftNoParamsVoid.cs" />
-    <Compile Include="Core\Utilities\WitchcraftVoid.cs" />
-    <Compile Include="Core\Utilities\XAction.cs" />
-    <Compile Include="Core\Utilities\XFunc.cs" />
-    <Compile Include="Formats\EnglishNumberVerbalizer.cs" />
-    <Compile Include="Formats\GermanNumberVerbalizer.cs" />
-    <Compile Include="Formats\Grammar\Aspect.cs" />
-    <Compile Include="Formats\Grammar\EnglishInflection.cs" />
-    <Compile Include="Formats\Grammar\Gender.cs" />
-    <Compile Include="Formats\NumberVerbalizer.cs" />
-    <Compile Include="Formats\QuotationMarks.cs" />
-    <Compile Include="Formats\Grammar\Inflection.cs" />
-    <Compile Include="Formats\Grammar\Person.cs" />
-    <Compile Include="Formats\Grammar\Tense.cs" />
-    <Compile Include="Formats\WritingSystem.cs" />
-    <Compile Include="Localization\Txtres.cs" />
-    <Compile Include="Metadata\IRantFunction.cs" />
-    <Compile Include="Metadata\IRantFunctionGroup.cs" />
-    <Compile Include="Metadata\IRantModeValue.cs" />
-    <Compile Include="Metadata\IRantParameter.cs" />
-    <Compile Include="Metadata\RantDescriptionAttribute.cs" />
-    <Compile Include="Core\Constructs\BlockState.cs" />
-    <Compile Include="Metadata\RantModeValue.cs" />
-    <Compile Include="Core\Output\OutputChain.cs" />
-    <Compile Include="Core\Output\OutputChainArticleBuffer.cs" />
-    <Compile Include="Core\Output\OutputChainBuffer.cs" />
-    <Compile Include="Core\Output\OutputWriter.cs" />
-    <Compile Include="Core\Framework\RantFunction.cs" />
-    <Compile Include="Core\Compiler\Syntax\RstDefineSubroutine.cs" />
-    <Compile Include="Core\Compiler\Syntax\RstEscape.cs" />
-    <Compile Include="Core\Compiler\Syntax\RstFunction.cs" />
-    <Compile Include="Core\Utilities\Witchcraft.cs" />
-    <Compile Include="Core\Framework\RantFunctionParameter.cs" />
-    <Compile Include="Core\Framework\RantFunctionParameterType.cs" />
-    <Compile Include="Metadata\RantFunctionAttribute.cs" />
-    <Compile Include="Core\Framework\RantFunctionSignature.cs" />
-    <Compile Include="Core\Framework\RantFunctionRegistry.cs" />
-    <Compile Include="Core\Sandbox.cs" />
-    <Compile Include="Core\Compiler\Syntax\RstBlock.cs" />
-    <Compile Include="Core\Compiler\Syntax\RST.cs" />
-    <Compile Include="Core\Compiler\Syntax\RstQuery.cs" />
-    <Compile Include="Core\Compiler\Syntax\RstReplacer.cs" />
-    <Compile Include="Core\Compiler\Syntax\RstSequence.cs" />
-    <Compile Include="Core\Compiler\Syntax\RstCallSubroutine.cs" />
-    <Compile Include="Core\Compiler\Syntax\RstSubroutineBase.cs" />
-    <Compile Include="Core\Compiler\Syntax\RstText.cs" />
-    <Compile Include="Core\Formatting\Endianness.cs" />
-    <Compile Include="Core\Formatting\BinaryFormat.cs" />
-    <Compile Include="Core\Formatting\NumberFormatter.cs" />
-    <Compile Include="Core\ObjectModel\ObjectTable.cs" />
-    <Compile Include="Core\ObjectModel\RantObject.cs" />
-    <Compile Include="Core\ObjectModel\ObjectStack.cs" />
-    <Compile Include="Core\ObjectModel\RantObjectType.cs" />
-    <Compile Include="Formats\EnglishPluralizer.cs" />
-    <Compile Include="Formats\Pluralizer.cs" />
-    <Compile Include="RantArgAttribute.cs" />
-    <Compile Include="RantCompilerException.cs" />
-    <Compile Include="RantCompilerMessage.cs" />
-    <Compile Include="RantCompilerMessageType.cs" />
-    <Compile Include="RantInternalException.cs" />
-    <Compile Include="Resources\RantDependencyResolver.cs" />
-    <Compile Include="RantOutputEntry.cs" />
-    <Compile Include="Resources\RantPackageDependency.cs" />
-    <Compile Include="Resources\RantPackageVersion.cs" />
-    <Compile Include="RantProgramArgs.cs" />
-    <Compile Include="RantUtils.cs" />
-    <Compile Include="Resources\RantResource.cs" />
-    <Compile Include="Tuple.cs" />
-    <Compile Include="Formats\RantFormat.cs" />
-    <Compile Include="Core\IO\BitField.cs" />
-    <Compile Include="Core\IO\EasyReader.cs" />
-    <Compile Include="Core\IO\EasyWriter.cs" />
-    <Compile Include="Core\IO\Endian.cs" />
-    <Compile Include="Core\IO\EndiannessAttribute.cs" />
-    <Compile Include="Core\IO\IOExtensions.cs" />
-    <Compile Include="Core\IO\IOUtil.cs" />
-    <Compile Include="RantOutput.cs" />
-    <Compile Include="Resources\RantPackage.cs" />
-    <Compile Include="Vocabulary\ClassCache.cs" />
-    <Compile Include="Vocabulary\Querying\Carrier.cs" />
-    <Compile Include="Vocabulary\Querying\CarrierComponentType.cs" />
-    <Compile Include="Vocabulary\Querying\CarrierState.cs" />
-    <Compile Include="Vocabulary\Querying\ClassFilter.cs" />
-    <Compile Include="Vocabulary\Querying\ClassFilterRule.cs" />
-    <Compile Include="Vocabulary\Querying\Filter.cs" />
-    <Compile Include="Vocabulary\Querying\RegexFilter.cs" />
-    <Compile Include="Vocabulary\RantDictionaryTable.Importer.cs" />
-    <Compile Include="Vocabulary\SyllableBuckets.cs" />
-    <Compile Include="Vocabulary\Utilities\Diff.cs" />
-    <Compile Include="Vocabulary\Utilities\DoubleMetaphoneStringExtension.cs" />
-    <Compile Include="Core\Formatting\Emoji.cs" />
-    <Compile Include="Vocabulary\Querying\RangeFilter.cs" />
-    <Compile Include="Vocabulary\RantTableLoadException.cs" />
-    <Compile Include="RantEngine.cs" />
-    <Compile Include="Core\Constructs\BlockAttribs.cs" />
-    <Compile Include="Core\Utilities\Limit.cs" />
-    <Compile Include="RantRuntimeException.cs" />
-    <Compile Include="Core\Formatting\Capitalization.cs" />
-    <Compile Include="Core\Output\ChannelVisibility.cs" />
-    <Compile Include="Core\Utilities\Extensions.cs" />
-    <Compile Include="Core\Formatting\NumberFormat.cs" />
-    <Compile Include="Core\Formatting\Numerals.cs" />
-    <Compile Include="Vocabulary\Querying\Query.cs" />
-    <Compile Include="RNG.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Vocabulary\RantDictionaryEntry.cs" />
-    <Compile Include="Core\Compiler\R.cs" />
-    <Compile Include="RantProgram.cs" />
-    <Compile Include="RantProgramOrigin.cs" />
-    <Compile Include="Core\Compiler\TokenReader.cs" />
-    <Compile Include="Core\Constructs\SyncType.cs" />
-    <Compile Include="Core\Constructs\Synchronizer.cs" />
-    <Compile Include="Core\Utilities\Util.cs" />
-    <Compile Include="Vocabulary\RantDictionary.cs" />
-    <Compile Include="Vocabulary\RantDictionaryTable.cs" />
-    <Compile Include="Vocabulary\RantDictionaryTerm.cs" />
-    <Compile Include="Vocabulary\Utilities\RhymeFlags.cs" />
-    <Compile Include="Vocabulary\Utilities\Rhymer.cs" />
-    <Compile Include="Vocabulary\Utilities\VocabUtils.cs" />
-    <Compile Include="_.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Rant License.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Core\Framework\RantFunctionRegistry.Loader.cs" />
-    <EmbeddedResource Include="Localization\en-US.lang" />
-    <EmbeddedResource Include="Localization\de-DE.lang" />
-  </ItemGroup>
+
   <ItemGroup>
     <EmbeddedResource Include="Core\Formatting\unicode_code_points.dat" />
+    <EmbeddedResource Include="Localization\de-DE.lang" />
+    <EmbeddedResource Include="Localization\en-US.lang" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 </Project>

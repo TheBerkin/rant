@@ -49,7 +49,7 @@ namespace Rant.Vocabulary
 		private readonly List<RantDictionaryEntry> _entriesList = new List<RantDictionaryEntry>(); // TODO: Use for indexing / weighted selection
 		private readonly HashSet<string> _hidden = new HashSet<string>(new[] { NSFW });
 		private readonly Dictionary<int, HashSet<string>> _subtypeIndexMap = new Dictionary<int, HashSet<string>>();
-		private readonly Dictionary<string, int> _subtypes = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
+		private readonly Dictionary<string, int> _subtypes = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 		private readonly ClassCache _cache;
 		private bool _dirty = true;
 		private SyllableBuckets[] _syllableBuckets;

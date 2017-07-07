@@ -87,7 +87,7 @@ namespace Rant.Core.IO
         /// <returns></returns>
         public static BitField FromValue<T>(T value) where T : struct
         {
-            int size = Marshal.SizeOf(typeof(T));
+            int size = Marshal.SizeOf<T>();
             var data = new byte[size];
             var ptr = Marshal.AllocHGlobal(size);
             Marshal.StructureToPtr(value, ptr, false);

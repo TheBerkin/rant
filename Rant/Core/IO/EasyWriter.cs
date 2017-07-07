@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -423,17 +424,17 @@ namespace Rant.Core.IO
         /// <param name="convertEndian">Indicates to the writer if endianness attributes should be regarded.</param>
         public EasyWriter Write<TStruct>(TStruct value, bool convertEndian = true)
         {
-            if (!typeof(TStruct).IsValueType)
+            if (!typeof(TStruct).GetTypeInfo().IsValueType)
                 throw new ArgumentException("TStruct must be a value type.");
 
-            var type = typeof(TStruct);
-            int size = type.IsEnum ? Marshal.SizeOf(Enum.GetUnderlyingType(type)) : Marshal.SizeOf(value);
+            var type = typeof(TStruct).GetTypeInfo();
+            int size = type.IsEnum ? Marshal.SizeOf(Enum.GetUnderlyingType(type.AsType()).GetTypeInfo()) : Marshal.SizeOf(value);
             var data = new byte[size];
             var ptr = Marshal.AllocHGlobal(size);
 
             if (type.IsEnum)
             {
-                var i = Convert.ChangeType(value, Enum.GetUnderlyingType(type));
+                var i = Convert.ChangeType(value, Enum.GetUnderlyingType(type.AsType()));
                 Marshal.StructureToPtr(i, ptr, false);
             }
             else if (convertEndian)

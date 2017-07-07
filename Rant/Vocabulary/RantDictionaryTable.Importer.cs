@@ -50,7 +50,7 @@ namespace Rant.Vocabulary
             string name = null; // Stores the table name before final table construction
             int termsPerEntry = 0; // Stores the term count
             var subtypes = new Dictionary<string, int>(); // Stores subtypes before final table construction
-            var hidden = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+            var hidden = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             RantDictionaryTable table = null; // The table object, constructed when first entry is found
             string l; // Current line string
             int line = 0; // Current line number

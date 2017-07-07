@@ -41,13 +41,14 @@ namespace Rant.Core.Compiler.Syntax
     internal abstract class RST
     {
         private const uint NullRST = 0x4e554c4c;
-        private static readonly Dictionary<uint, Type> _rstTypeMap = new Dictionary<uint, Type>();
-        private static readonly Dictionary<Type, uint> _rstIDMap = new Dictionary<Type, uint>();
+        private static readonly Dictionary<uint, TypeInfo> _rstTypeMap = new Dictionary<uint, TypeInfo>();
+        private static readonly Dictionary<TypeInfo, uint> _rstIDMap = new Dictionary<TypeInfo, uint>();
         internal LineCol Location;
 
         static RST()
         {
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes()
+            foreach (var type in typeof(RST).GetTypeInfo().Assembly.GetTypes()
+				.Select(t => t.GetTypeInfo())
                 .Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(RST))))
             {
                 var attr = type.GetCustomAttributes(typeof(RSTAttribute), false).FirstOrDefault() as RSTAttribute;
@@ -88,14 +89,14 @@ namespace Rant.Core.Compiler.Syntax
 
         public static RST DeserializeRST(EasyReader input)
         {
-            Type rootType;
-            if (!_rstTypeMap.TryGetValue(input.ReadUInt32(), out rootType) || rootType != typeof(RstSequence))
+            TypeInfo rootType;
+            if (!_rstTypeMap.TryGetValue(input.ReadUInt32(), out rootType) || rootType.AsType() != typeof(RstSequence))
                 throw new InvalidDataException(GetString("err-pgmload-invalid-rst-root"));
 
             int rootLine = input.ReadInt32();
             int rootCol = input.ReadInt32();
             int rootIndex = input.ReadInt32();
-            var rootRST = Activator.CreateInstance(rootType, new LineCol(rootLine, rootCol, rootIndex)) as RstSequence;
+            var rootRST = Activator.CreateInstance(rootType.AsType(), new LineCol(rootLine, rootCol, rootIndex)) as RstSequence;
             if (rootRST == null) throw new InvalidDataException(GetString("err-pgmload-root-instance-fail"));
 
             var stack = new Stack<IEnumerator<DeserializeRequest>>(10);
@@ -116,14 +117,14 @@ namespace Rant.Core.Compiler.Syntax
                         continue;
                     }
 
-                    Type type;
+                    TypeInfo type;
                     if (!_rstTypeMap.TryGetValue(code, out type))
                         throw new InvalidDataException(GetString("err-pgmload-bad-type", code));
 
                     int line = input.ReadInt32();
                     int col = input.ReadInt32();
                     int index = input.ReadInt32();
-                    var rst = Activator.CreateInstance(type, new LineCol(line, col, index)) as RST;
+                    var rst = Activator.CreateInstance(type.AsType(), new LineCol(line, col, index)) as RST;
                     if (rst == null) throw new InvalidDataException(GetString("err-pgmload-rst-creation-fail", type.Name));
                     deserializer.Current.SetResult(rst);
                     stack.Push(rst.DeserializeObject(input));
@@ -145,7 +146,7 @@ namespace Rant.Core.Compiler.Syntax
 
         private IEnumerator<RST> SerializeObject(EasyWriter output)
         {
-            output.Write(_rstIDMap[GetType()]);
+            output.Write(_rstIDMap[GetType().GetTypeInfo()]);
             output.Write(Location.Line);
             output.Write(Location.Column);
             output.Write(Location.Index);
