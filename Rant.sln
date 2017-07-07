@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rant", "Rant\Rant.csproj", "{A4B6FD1A-44A6-42D2-B4AA-57BC85D2CDD7}"
 EndProject
@@ -219,6 +219,10 @@ Global
 		Debug|Default = Debug|Default
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Install|Any CPU = Install|Any CPU
+		Install|Default = Install|Default
+		Install|x64 = Install|x64
+		Install|x86 = Install|x86
 		Release|Any CPU = Release|Any CPU
 		Release|Default = Release|Default
 		Release|x64 = Release|x64
