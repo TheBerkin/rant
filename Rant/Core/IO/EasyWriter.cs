@@ -428,14 +428,15 @@ namespace Rant.Core.IO
             if (!typeof(TStruct).GetTypeInfo().IsValueType)
                 throw new ArgumentException("TStruct must be a value type.");
 
-            var type = typeof(TStruct).GetTypeInfo();
-            int size = type.IsEnum ? Marshal.SizeOf(Enum.GetUnderlyingType(type.AsType()).GetTypeInfo()) : Marshal.SizeOf(value);
+            var type = typeof(TStruct);
+            var typeInfo = type.GetTypeInfo();
+            int size = typeInfo.IsEnum ? Marshal.SizeOf(Enum.GetUnderlyingType(type).GetTypeInfo()) : Marshal.SizeOf(value);
             var data = new byte[size];
             var ptr = Marshal.AllocHGlobal(size);
 
-            if (type.IsEnum)
+            if (typeInfo.IsEnum)
             {
-                var i = Convert.ChangeType(value, Enum.GetUnderlyingType(type.AsType()));
+                var i = Convert.ChangeType(value, Enum.GetUnderlyingType(type));
                 Marshal.StructureToPtr(i, ptr, false);
             }
             else if (convertEndian)
@@ -447,7 +448,7 @@ namespace Rant.Core.IO
 
             Marshal.Copy(ptr, data, 0, size);
 
-            if (convertEndian && (IOUtil.IsNumericType(type) || type.IsEnum))
+            if (convertEndian && (IOUtil.IsNumericType(type) || typeInfo.IsEnum))
                 IOUtil.ConvertEndian(data, Endianness);
 
             Marshal.FreeHGlobal(ptr);
