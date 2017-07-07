@@ -83,12 +83,12 @@ namespace Rant.Vocabulary
             {
                 if (c.EndsWith("?"))
                 {
-                    string trimmed = string.Intern(c.Substring(0, c.Length - 1));
+                    string trimmed = c.Substring(0, c.Length - 1);
                     (_optionalClasses ?? (_optionalClasses = new HashSet<string>())).Add(trimmed);
                     _classes.Add(trimmed);
                 }
                 else
-                    _classes.Add(string.Intern(c));
+                    _classes.Add(c);
             }
             Weight = weight;
         }
@@ -165,7 +165,7 @@ namespace Rant.Vocabulary
             if (className.Trim().EndsWith("?"))
             {
                 optional = true;
-                className = string.Intern(className.Trim().TrimEnd('?'));
+                className = className.Trim().TrimEnd('?');
             }
             _classes.Add(className);
             if (optional) (_optionalClasses ?? (_optionalClasses = new HashSet<string>())).Add(className);

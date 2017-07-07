@@ -11,7 +11,7 @@ namespace Rant.Vocabulary
         {
             if (!Util.ValidateName(name))
                 throw new ArgumentException($"Invalid class name: {name}");
-            _name = String.Intern(name.ToLowerInvariant());
+            _name = name.ToLowerInvariant();
         }
 
         public string Name => _name;

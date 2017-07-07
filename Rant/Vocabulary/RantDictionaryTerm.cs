@@ -50,7 +50,7 @@ namespace Rant.Vocabulary
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             ValueSplitIndex = splitIndex;
-            _value = string.Intern(value);
+            _value = value;
         }
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace Rant.Vocabulary
         public RantDictionaryTerm(string value, string pronunciation)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
-            _value = string.Intern(value);
-            _pronunciation = string.Intern(pronunciation ?? string.Empty);
+            _value = value;
+            _pronunciation = pronunciation ?? string.Empty;
         }
 
         /// <summary>
@@ -86,8 +86,8 @@ namespace Rant.Vocabulary
             if (pronSplitIndex > pronunciation?.Length)
                 throw new ArgumentException(GetString("err-invalid-term-split"), nameof(pronSplitIndex));
 
-            _value = string.Intern(value);
-            _pronunciation = string.Intern(pronunciation ?? string.Empty);
+            _value = value;
+            _pronunciation = pronunciation ?? string.Empty;
             ValueSplitIndex = valueSplitIndex;
             PronunciationSplitIndex = pronSplitIndex;
         }
@@ -101,7 +101,7 @@ namespace Rant.Vocabulary
             set
             {
                 if (value == null) throw new ArgumentNullException(nameof(value));
-                _value = string.Intern(value);
+                _value = value;
             }
         }
 
@@ -138,7 +138,7 @@ namespace Rant.Vocabulary
             get { return _pronunciation; }
             set
             {
-                _pronunciation = string.Intern(value ?? string.Empty);
+                _pronunciation = value ?? string.Empty;
                 if (_syllables != null) CreateSyllables();
             }
         }

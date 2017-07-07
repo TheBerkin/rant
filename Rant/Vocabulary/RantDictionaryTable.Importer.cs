@@ -170,7 +170,7 @@ namespace Rant.Vocabulary
                                     {
                                         if (!Util.ValidateName(a.Value))
                                             throw new RantTableLoadException(origin, line, i, "err-table-invalid-class", a.Value);
-                                        hidden.Add(String.Intern(a.Value));
+                                        hidden.Add(a.Value);
                                     }
                                     break;
                                 case "dummy":
