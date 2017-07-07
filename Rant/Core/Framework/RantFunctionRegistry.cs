@@ -1985,7 +1985,7 @@ namespace Rant.Core.Framework
 		[RantDescription("Prints a boolean value indicating whether the two values have equal string representations.")]
 		private static void CompEquals(Sandbox sb, string a, string b)
 		{
-			sb.Print(String.Equals(a, b, StringComparison.InvariantCulture) ? TRUE : FALSE);
+			sb.Print(String.Equals(a, b, StringComparison.Ordinal) ? TRUE : FALSE);
 		}
 
 		[RantFunction("eqi")]
@@ -1999,7 +1999,7 @@ namespace Rant.Core.Framework
 		[RantDescription("Prints a boolean value indicating whether the two values do not have equal string representations.")]
 		private static void CompNotEquals(Sandbox sb, string a, string b)
 		{
-			sb.Print(String.Equals(a, b, StringComparison.InvariantCulture) ? FALSE : TRUE);
+			sb.Print(String.Equals(a, b, StringComparison.Ordinal) ? FALSE : TRUE);
 		}
 
 		[RantFunction("nei")]
