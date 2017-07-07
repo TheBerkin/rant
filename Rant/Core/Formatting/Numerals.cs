@@ -47,7 +47,7 @@ namespace Rant.Core.Formatting
             var intArr =
                 number.ToString(CultureInfo.InvariantCulture)
                     .Reverse()
-                    .Select(c => int.Parse(c.ToString(CultureInfo.InvariantCulture)))
+                    .Select(c => int.Parse(c.ToString()))
                     .ToArray();
             var sb = new StringBuilder();
             for (int i = intArr.Length; i-- > 0;)

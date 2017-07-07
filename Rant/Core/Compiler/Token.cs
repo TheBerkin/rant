@@ -51,7 +51,7 @@ namespace Rant.Core.Compiler
             Line = line;
             Column = index - lastLineStart + 1;
             Index = index;
-            Value = value.ToString(CultureInfo.InvariantCulture);
+            Value = value.ToString();
         }
 
         public int Length => Value?.Length ?? 0;
