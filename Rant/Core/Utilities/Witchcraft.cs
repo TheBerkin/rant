@@ -41,12 +41,16 @@ namespace Rant.Core.Utilities
 
         static Witchcraft()
         {
-            var ass = Assembly.GetAssembly(typeof(Witchcraft));
+            var ass = typeof(Witchcraft).GetTypeInfo().Assembly;
             var lstFuncTypes = new List<Type>();
             var lstVoidTypes = new List<Type>();
-            foreach (var type in ass.GetTypes().Where(t => t.IsSubclassOf(typeof(Witchcraft)) && t.IsGenericTypeDefinition))
+            foreach (var type in
+                from type in ass.GetTypes()
+                let typeInfo = type.GetTypeInfo()
+                where typeInfo.IsSubclassOf(typeof(Witchcraft)) && typeInfo.IsGenericTypeDefinition
+                select type)
             {
-                if (type.IsSubclassOf(typeof(WitchcraftVoid)))
+                if (type.GetTypeInfo().IsSubclassOf(typeof(WitchcraftVoid)))
                     lstVoidTypes.Add(type);
                 else
                     lstFuncTypes.Add(type);
