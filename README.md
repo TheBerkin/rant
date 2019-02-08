@@ -99,7 +99,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for a full guide on how you can help.
 ## Rant Resources
 
 * [Rant Homepage](http://berkin.me/rant)
-* [Rant Documentation](http://berkin.me/rantdocs)
+* [Rant Documentation](http://berkin.me/rant/docs)
 * [Rant Demos](https://github.com/TheBerkin/Rant.Demos)
 * [Rant Standard Dictionary](https://github.com/TheBerkin/Rantionary)
 * [Online Pattern Tester](http://lett.at/rantbox/)
